@@ -55,6 +55,11 @@ const Login = () => {
               إنشاء حساب جديد
             </Link>
           </p>
+          <p className="mt-2 text-sm text-gray-600">
+            <Link to="/patient-profile" className="font-medium text-primary hover:text-primary/90">
+              عرض ملف المريض مباشرة
+            </Link>
+          </p>
         </div>
         
         <Card>
