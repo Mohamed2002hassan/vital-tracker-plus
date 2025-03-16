@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { Activity } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,14 +25,14 @@ const Login = () => {
       if (email && password) {
         login(email, password);
         toast({
-          title: "Login successful",
-          description: "Welcome back to VitalTrack!",
+          title: "تم تسجيل الدخول بنجاح",
+          description: "مرحباً بعودتك إلى نظام المراقبة الصحية!",
         });
       } else {
         toast({
           variant: "destructive",
-          title: "Login failed",
-          description: "Please enter valid credentials",
+          title: "فشل تسجيل الدخول",
+          description: "يرجى إدخال بيانات صحيحة",
         });
       }
       setIsLoading(false);
@@ -39,36 +40,34 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8" dir="rtl">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <div className="flex justify-center">
             <Activity className="h-12 w-12 text-primary" />
           </div>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-            Sign in to VitalTrack
+            تسجيل الدخول
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Don't have an account?{" "}
+            ليس لديك حساب؟{" "}
             <Link to="/register" className="font-medium text-primary hover:text-primary/90">
-              Register
+              إنشاء حساب جديد
             </Link>
           </p>
         </div>
         
         <Card>
           <CardHeader>
-            <CardTitle>Login</CardTitle>
+            <CardTitle>تسجيل الدخول</CardTitle>
             <CardDescription>
-              Enter your credentials to access your dashboard
+              أدخل بيانات الاعتماد الخاصة بك للوصول إلى لوحة التحكم
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Email
-                </label>
+                <Label htmlFor="email">البريد الإلكتروني</Label>
                 <Input
                   id="email"
                   type="email"
@@ -76,12 +75,11 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  dir="ltr"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Password
-                </label>
+                <Label htmlFor="password">كلمة المرور</Label>
                 <Input
                   id="password"
                   type="password"
@@ -89,12 +87,13 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  dir="ltr"
                 />
               </div>
             </CardContent>
             <CardFooter>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
               </Button>
             </CardFooter>
           </form>

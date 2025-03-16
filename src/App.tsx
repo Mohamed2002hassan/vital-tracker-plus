@@ -11,6 +11,7 @@ import Reports from "./pages/Reports";
 import Comparison from "./pages/Comparison";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PatientProfile from "./pages/PatientProfile";
 import NotFound from "./pages/NotFound";
 
 // Create authentication context
@@ -88,6 +89,10 @@ const App = () => {
               <Route 
                 path="/comparison" 
                 element={isAuthenticated ? <Comparison /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/patient-profile" 
+                element={isAuthenticated ? <PatientProfile /> : <Navigate to="/login" />} 
               />
               <Route 
                 path="/login" 
