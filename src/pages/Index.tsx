@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Activity, ArrowRight, Heart, Thermometer, Droplet } from 'lucide-react';
+import { Activity, ArrowRight, Heart, Thermometer, Droplet, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -23,6 +23,9 @@ const Index = () => {
           </Button>
           <Button asChild variant="secondary" size="lg">
             <Link to="/patient-profile">عرض ملف المريض <ArrowRight className="ml-2 h-4 w-4" /></Link>
+          </Button>
+          <Button asChild variant="ghost" size="lg">
+            <Link to="/contact">اتصل بنا <MessageSquare className="ml-2 h-4 w-4" /></Link>
           </Button>
         </div>
       </div>
