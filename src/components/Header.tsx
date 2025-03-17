@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
-import { Activity, FileText, BarChart2, LogOut, User } from 'lucide-react';
+import { Activity, FileText, BarChart2, LogOut, User, ClipboardList } from 'lucide-react';
 
 const Header = () => {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
@@ -66,6 +66,20 @@ const Header = () => {
                   <div className="flex items-center space-x-1">
                     <BarChart2 className="h-4 w-4" />
                     <span>Comparison</span>
+                  </div>
+                </Link>
+
+                <Link 
+                  to="/patient-profile" 
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActiveRoute('/patient-profile') 
+                      ? 'bg-primary text-white' 
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center space-x-1">
+                    <ClipboardList className="h-4 w-4" />
+                    <span>ملف المريض</span>
                   </div>
                 </Link>
               </nav>
@@ -137,6 +151,18 @@ const Header = () => {
             >
               <BarChart2 className="h-5 w-5 mx-auto mb-1" />
               <span className="text-xs">Comparison</span>
+            </Link>
+            
+            <Link 
+              to="/patient-profile" 
+              className={`flex-1 text-center py-2 ${
+                isActiveRoute('/patient-profile') 
+                  ? 'text-primary font-medium' 
+                  : 'text-gray-600'
+              }`}
+            >
+              <ClipboardList className="h-5 w-5 mx-auto mb-1" />
+              <span className="text-xs">ملف المريض</span>
             </Link>
           </div>
         </div>

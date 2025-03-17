@@ -21,9 +21,6 @@ const Index = () => {
           <Button asChild variant="outline" size="lg">
             <Link to="/register">إنشاء حساب جديد</Link>
           </Button>
-          <Button asChild variant="secondary" size="lg">
-            <Link to="/patient-profile">عرض ملف المريض <ArrowRight className="ml-2 h-4 w-4" /></Link>
-          </Button>
           <Button asChild variant="ghost" size="lg">
             <Link to="/contact">اتصل بنا <MessageSquare className="ml-2 h-4 w-4" /></Link>
           </Button>

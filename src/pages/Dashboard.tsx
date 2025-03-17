@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import VitalCard from '@/components/VitalCard';
 import HeartRateMonitor from '@/components/HeartRateMonitor';
 import AlertBanner from '@/components/AlertBanner';
+import DiseasePrediction from '@/components/DiseasePrediction';
 import { generateVitalData, VitalsDataPoint } from '@/utils/vitalsData';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -125,16 +126,27 @@ const Dashboard = () => {
           )}
         </div>
         
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Heart Rate Monitor</h2>
-          {vitalsData ? (
-            <HeartRateMonitor 
-              heartRate={vitalsData.heartRate.value} 
-              status={vitalsData.heartRate.status} 
-            />
-          ) : (
-            <div className="w-full h-40 bg-gray-100 rounded-xl animate-pulse"></div>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Heart Rate Monitor</h2>
+            {vitalsData ? (
+              <HeartRateMonitor 
+                heartRate={vitalsData.heartRate.value} 
+                status={vitalsData.heartRate.status} 
+              />
+            ) : (
+              <div className="w-full h-40 bg-gray-100 rounded-xl animate-pulse"></div>
+            )}
+          </div>
+          
+          <div>
+            <h2 className="text-xl font-semibold mb-4">التشخيص الذكي</h2>
+            {vitalsData ? (
+              <DiseasePrediction vitalsData={vitalsData} />
+            ) : (
+              <div className="w-full h-40 bg-gray-100 rounded-xl animate-pulse"></div>
+            )}
+          </div>
         </div>
         
         <div className="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
