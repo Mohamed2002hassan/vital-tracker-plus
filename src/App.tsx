@@ -38,7 +38,7 @@ function App() {
   const login = (email: string, password: string) => {
     // In a real app, this would validate credentials with a backend
     setIsAuthenticated(true);
-    setUser({ name: "Test User", email });
+    setUser({ name: email.split('@')[0], email });
   };
   
   const register = (name: string, email: string, password: string) => {
