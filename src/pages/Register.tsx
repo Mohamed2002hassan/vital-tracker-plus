@@ -1,12 +1,14 @@
 
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { Activity } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -16,6 +18,8 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { language, t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +27,8 @@ const Register = () => {
     if (password !== confirmPassword) {
       toast({
         variant: "destructive",
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match",
+        title: language === 'ar' ? "كلمات المرور غير متطابقة" : "Passwords don't match",
+        description: language === 'ar' ? "يرجى التأكد من تطابق كلمات المرور" : "Please make sure your passwords match",
       });
       return;
     }
@@ -36,14 +40,15 @@ const Register = () => {
       if (name && email && password) {
         register(name, email, password);
         toast({
-          title: "Registration successful",
-          description: "Your account has been created!",
+          title: language === 'ar' ? "تم التسجيل بنجاح" : "Registration successful",
+          description: language === 'ar' ? "تم إنشاء حسابك!" : "Your account has been created!",
         });
+        navigate('/dashboard');
       } else {
         toast({
           variant: "destructive",
-          title: "Registration failed",
-          description: "Please fill out all fields",
+          title: language === 'ar' ? "فشل التسجيل" : "Registration failed",
+          description: language === 'ar' ? "يرجى ملء جميع الحقول" : "Please fill out all fields",
         });
       }
       setIsLoading(false);
@@ -51,40 +56,40 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8" dir={language === 'ar' ? "rtl" : "ltr"}>
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <div className="flex justify-center">
             <Activity className="h-12 w-12 text-primary" />
           </div>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-            Create your account
+            {language === 'ar' ? "إنشاء حساب" : "Create your account"}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Already have an account?{" "}
+            {language === 'ar' ? "لديك حساب بالفعل؟" : "Already have an account?"}{" "}
             <Link to="/login" className="font-medium text-primary hover:text-primary/90">
-              Sign in
+              {language === 'ar' ? "تسجيل الدخول" : "Sign in"}
             </Link>
           </p>
         </div>
         
         <Card>
           <CardHeader>
-            <CardTitle>Register</CardTitle>
+            <CardTitle>{language === 'ar' ? "التسجيل" : "Register"}</CardTitle>
             <CardDescription>
-              Enter your information to create an account
+              {language === 'ar' ? "أدخل معلوماتك لإنشاء حساب" : "Enter your information to create an account"}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Full Name
-                </label>
+                <Label htmlFor="name">
+                  {language === 'ar' ? "الاسم الكامل" : "Full Name"}
+                </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder={language === 'ar' ? "محمد احمد" : "John Doe"}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -92,9 +97,9 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Email
-                </label>
+                <Label htmlFor="email">
+                  {language === 'ar' ? "البريد الإلكتروني" : "Email"}
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -102,13 +107,14 @@ const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  dir="ltr"
                 />
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Password
-                </label>
+                <Label htmlFor="password">
+                  {language === 'ar' ? "كلمة المرور" : "Password"}
+                </Label>
                 <Input
                   id="password"
                   type="password"
@@ -116,13 +122,14 @@ const Register = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  dir="ltr"
                 />
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Confirm Password
-                </label>
+                <Label htmlFor="confirmPassword">
+                  {language === 'ar' ? "تأكيد كلمة المرور" : "Confirm Password"}
+                </Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -130,12 +137,15 @@ const Register = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  dir="ltr"
                 />
               </div>
             </CardContent>
             <CardFooter>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading 
+                  ? (language === 'ar' ? "جاري إنشاء الحساب..." : "Creating account...") 
+                  : (language === 'ar' ? "إنشاء حساب" : "Create account")}
               </Button>
             </CardFooter>
           </form>

@@ -66,7 +66,7 @@ function App() {
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
             <Route path="/reports" element={isAuthenticated ? <Reports /> : <Navigate to="/login" />} />
             <Route path="/comparison" element={isAuthenticated ? <Comparison /> : <Navigate to="/login" />} />
-            <Route path="/patient-profile" element={<PatientProfile />} />
+            <Route path="/patient-profile" element={isAuthenticated ? <PatientProfile /> : <Navigate to="/login" />} />
             
             {/* 404 route */}
             <Route path="*" element={<NotFound />} />
