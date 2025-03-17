@@ -181,13 +181,13 @@ const Dashboard = () => {
               <h3 className="text-lg font-semibold mb-4">{t('contactUs')}</h3>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <Mail className="h-5 w-5 text-gray-500 mr-3" />
+                  <Mail className={`h-5 w-5 text-gray-500 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
                   <a href="mailto:support@vitaltrack.com" className="text-gray-600 hover:text-primary">
                     support@vitaltrack.com
                   </a>
                 </div>
                 <div className="flex items-center">
-                  <Phone className="h-5 w-5 text-gray-500 mr-3" />
+                  <Phone className={`h-5 w-5 text-gray-500 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
                   <a href="tel:+123456789" className="text-gray-600 hover:text-primary">
                     +1 (234) 567-890
                   </a>
@@ -201,7 +201,7 @@ const Dashboard = () => {
                 href="tel:911" 
                 className="inline-flex items-center bg-red-50 text-red-700 px-4 py-2 rounded-lg font-medium"
               >
-                <Phone className="h-4 w-4 mr-2" />
+                <Phone className={`h-4 w-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                 {t('callEmergency')}
               </a>
             </div>

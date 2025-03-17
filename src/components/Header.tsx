@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
-import { Activity, FileText, BarChart2, LogOut, User, ClipboardList } from 'lucide-react';
+import { Activity, FileText, BarChart2, LogOut, ClipboardList } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -29,7 +29,7 @@ const Header = () => {
           
           {isAuthenticated ? (
             <div className="flex items-center space-x-4">
-              <nav className="hidden md:flex space-x-1">
+              <nav className={`hidden md:flex ${language === 'ar' ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
                 <Link 
                   to="/dashboard" 
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -38,7 +38,7 @@ const Header = () => {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center space-x-1">
+                  <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
                     <Activity className="h-4 w-4" />
                     <span>{t('dashboard')}</span>
                   </div>
@@ -52,7 +52,7 @@ const Header = () => {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center space-x-1">
+                  <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
                     <FileText className="h-4 w-4" />
                     <span>{t('reports')}</span>
                   </div>
@@ -66,7 +66,7 @@ const Header = () => {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center space-x-1">
+                  <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
                     <BarChart2 className="h-4 w-4" />
                     <span>{t('comparison')}</span>
                   </div>
@@ -80,32 +80,28 @@ const Header = () => {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center space-x-1">
+                  <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-1' : 'space-x-1'}`}>
                     <ClipboardList className="h-4 w-4" />
                     <span>{t('patientProfile')}</span>
                   </div>
                 </Link>
               </nav>
               
-              <div className="flex items-center space-x-2">
+              <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                 <LanguageSwitcher />
-                <div className="text-sm font-medium text-gray-700 hidden sm:block">
-                  <User className="h-4 w-4 inline mr-1" />
-                  {user?.name || t('user')}
-                </div>
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={logout}
                   className="text-gray-700 hover:text-gray-900"
                 >
-                  <LogOut className="h-4 w-4 mr-1" />
+                  <LogOut className={`h-4 w-4 ${language === 'ar' ? 'ml-1' : 'mr-1'}`} />
                   <span className="hidden sm:inline">{t('logout')}</span>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="flex items-center space-x-2">
+            <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
               <LanguageSwitcher />
               <Link to="/login">
                 <Button variant="ghost" size="sm">{t('login')}</Button>

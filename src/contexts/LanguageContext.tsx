@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 // Define available languages
@@ -63,12 +62,15 @@ const translations = {
     'consultHealthcare': 'إذا لاحظت قراءات غير طبيعية باستمرار، استشر أخصائي رعاية صحية',
     'checkReports': 'تحقق من صفحة التقارير للحصول على تحليل مفصل لمؤشرات صحتك',
     'allRightsReserved': 'جميع الحقوق محفوظة',
+    'emergencyContact': 'اتصال الطوارئ',
+    'emergencyMessage': 'في حالة الطوارئ، اتصل فوراً بالرقم التالي',
+    'callEmergency': 'اتصل بالطوارئ',
     
     // Disease Prediction
     'smartDiagnosis': 'التشخيص الذكي',
     'analyzeHealthConditions': 'تحليل وتوقع الحالات الصحية بناءً على المؤشرات الحيوية',
     'clickToAnalyze': 'اضغط على الزر أدناه لتحليل المؤشرات الحيوية والتنبؤ بالحالات الصحية المحتملة',
-    'diagnosisDisclaimer': '*ملاحظة: هذا التحليل تقريبي وليس بديلاً عن التشخيص الطبي المتخصص',
+    'diagnosisDisclaimer': '*ملاحظة: هذا التحليل تقريبي وليس بديلا�� عن التشخيص الطبي المتخصص',
     'matchPercentage': 'نسبة التطابق:',
     'possibleSymptoms': 'الأعراض المحتملة:',
     'medicalAdvice': 'النصيحة الطبية:',
@@ -163,6 +165,9 @@ const translations = {
     'consultHealthcare': 'If you notice consistently abnormal readings, consult a healthcare professional',
     'checkReports': 'Check the Reports page for detailed analysis of your health metrics',
     'allRightsReserved': 'All rights reserved',
+    'emergencyContact': 'Emergency Contact',
+    'emergencyMessage': 'In case of emergency, call immediately',
+    'callEmergency': 'Call Emergency',
     
     // Disease Prediction
     'smartDiagnosis': 'Smart Diagnosis',
