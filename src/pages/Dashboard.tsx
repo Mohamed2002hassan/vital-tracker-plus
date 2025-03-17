@@ -9,11 +9,13 @@ import DiseasePrediction from '@/components/DiseasePrediction';
 import { generateVitalData, VitalsDataPoint } from '@/utils/vitalsData';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Dashboard = () => {
   const [vitalsData, setVitalsData] = useState<VitalsDataPoint | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { t, language } = useLanguage();
   
   // Load initial data
   useEffect(() => {
@@ -61,8 +63,8 @@ const Dashboard = () => {
       
       <main className="flex-grow page-container">
         <div className="page-heading">
-          <h1 className="page-title">Dashboard</h1>
-          <p className="page-subtitle">Monitor your vital signs in real-time</p>
+          <h1 className="page-title">{t('dashboard')}</h1>
+          <p className="page-subtitle">{t('monitorVitalSigns')}</p>
         </div>
         
         <div className="mb-6 flex justify-end">
@@ -73,8 +75,8 @@ const Dashboard = () => {
             disabled={loading}
             className="flex items-center"
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh Data
+            <RefreshCw className={`h-4 w-4 ${language === 'ar' ? 'ml-2' : 'mr-2'} ${loading ? 'animate-spin' : ''}`} />
+            {t('refreshData')}
           </Button>
         </div>
         
@@ -84,21 +86,21 @@ const Dashboard = () => {
           {vitalsData ? (
             <>
               <VitalCard 
-                title="Heart Rate" 
+                title={t('heartRate')} 
                 value={vitalsData.heartRate.value} 
                 status={vitalsData.heartRate.status}
                 unit="bpm"
                 type="heartRate"
               />
               <VitalCard 
-                title="Temperature" 
+                title={t('temperature')} 
                 value={vitalsData.temperature.value} 
                 status={vitalsData.temperature.status}
                 unit="°C"
                 type="temperature"
               />
               <VitalCard 
-                title="Oxygen Level" 
+                title={t('oxygenLevel')} 
                 value={vitalsData.oxygenLevel.value} 
                 status={vitalsData.oxygenLevel.status}
                 unit="%"
@@ -128,7 +130,7 @@ const Dashboard = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div>
-            <h2 className="text-xl font-semibold mb-4">Heart Rate Monitor</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('heartRateMonitor')}</h2>
             {vitalsData ? (
               <HeartRateMonitor 
                 heartRate={vitalsData.heartRate.value} 
@@ -140,7 +142,7 @@ const Dashboard = () => {
           </div>
           
           <div>
-            <h2 className="text-xl font-semibold mb-4">التشخيص الذكي</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('aiDiagnosis')}</h2>
             {vitalsData ? (
               <DiseasePrediction vitalsData={vitalsData} />
             ) : (
@@ -150,23 +152,23 @@ const Dashboard = () => {
         </div>
         
         <div className="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 className="text-xl font-semibold mb-4">Quick Tips</h2>
+          <h2 className="text-xl font-semibold mb-4">{t('quickTips')}</h2>
           <ul className="space-y-2 text-gray-700">
             <li className="flex items-start">
               <span className="text-medical-blue font-bold mr-2">•</span>
-              Stay hydrated to maintain optimal heart rate and body temperature
+              {t('stayHydrated')}
             </li>
             <li className="flex items-start">
               <span className="text-medical-blue font-bold mr-2">•</span>
-              Regular deep breathing can help improve oxygen levels
+              {t('deepBreathing')}
             </li>
             <li className="flex items-start">
               <span className="text-medical-blue font-bold mr-2">•</span>
-              If you notice consistently abnormal readings, consult a healthcare professional
+              {t('consultHealthcare')}
             </li>
             <li className="flex items-start">
               <span className="text-medical-blue font-bold mr-2">•</span>
-              Check the Reports page for detailed analysis of your health metrics
+              {t('checkReports')}
             </li>
           </ul>
         </div>
@@ -175,7 +177,7 @@ const Dashboard = () => {
       <footer className="bg-white border-t border-gray-200 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} VitalTrack. All rights reserved.
+            © {new Date().getFullYear()} VitalTrack. {t('allRightsReserved')}
           </p>
         </div>
       </footer>

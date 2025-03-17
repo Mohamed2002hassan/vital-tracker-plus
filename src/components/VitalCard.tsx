@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Activity, Thermometer, Droplet } from 'lucide-react';
 import { Vital } from '@/utils/vitalsData';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface VitalCardProps {
   title: string;
@@ -15,6 +16,7 @@ interface VitalCardProps {
 
 const VitalCard = ({ title, value, status, unit, type, className }: VitalCardProps) => {
   const [animate, setAnimate] = useState(false);
+  const { t } = useLanguage();
   
   // Animate value changes
   useEffect(() => {
@@ -56,6 +58,28 @@ const VitalCard = ({ title, value, status, unit, type, className }: VitalCardPro
     }
   };
   
+  const getStatusText = () => {
+    switch (status) {
+      case "normal":
+        return t('normal');
+      case "warning":
+        return t('warning');
+      case "critical":
+        return t('critical');
+    }
+  };
+  
+  const getStatusDescription = () => {
+    switch (status) {
+      case "normal":
+        return t('withinNormalRange');
+      case "warning":
+        return t('outsideNormalRange');
+      case "critical":
+        return t('requiresAttention');
+    }
+  };
+  
   return (
     <div className={cn("vital-card", className)}>
       <div className="flex justify-between items-start mb-4">
@@ -64,7 +88,7 @@ const VitalCard = ({ title, value, status, unit, type, className }: VitalCardPro
           {title}
         </h3>
         <span className={cn("px-2 py-1 rounded-full text-xs font-medium", getStatusColor())}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+          {getStatusText()}
         </span>
       </div>
       
@@ -74,11 +98,7 @@ const VitalCard = ({ title, value, status, unit, type, className }: VitalCardPro
         </div>
         
         <p className="text-sm text-gray-500 mt-2">
-          {status === "normal" 
-            ? "Within normal range" 
-            : status === "warning" 
-              ? "Outside normal range" 
-              : "Requires attention"}
+          {getStatusDescription()}
         </p>
       </div>
     </div>

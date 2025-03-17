@@ -2,171 +2,200 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
+ 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 196 94% 48%;
+ 
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-
+ 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 196 94% 48%;
+ 
+    --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
+ 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 196 94% 48%;
-
+    --ring: 222.2 84% 4.9%;
+ 
     --radius: 0.5rem;
   }
-
+ 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
+ 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
+ 
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 196 94% 48%;
+ 
+    --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
+ 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 196 94% 48%;
+ 
+    --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 84.2% 60.2%;
+ 
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
+ 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 196 94% 48%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-  
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
-  }
-  
-  h1 {
-    @apply text-3xl lg:text-4xl;
-  }
-  
-  h2 {
-    @apply text-2xl lg:text-3xl;
-  }
-  
-  h3 {
-    @apply text-xl lg:text-2xl;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-white/70 backdrop-blur-sm border border-white/20 shadow-md;
-  }
-  
-  .vital-card {
-    @apply glass-card p-6 rounded-xl transition-all duration-300 hover:shadow-lg;
-  }
-  
-  .button-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors duration-200;
-  }
-  
-  .button-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md transition-colors duration-200;
-  }
-  
-  .input-field {
-    @apply p-2 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200;
-  }
-  
   .page-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in;
+    @apply container mx-auto px-4 py-8 sm:px-6 lg:px-8;
   }
-  
+
   .page-heading {
-    @apply flex flex-col space-y-1 mb-8 animate-slide-down;
+    @apply mb-8;
   }
-  
+
   .page-title {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold tracking-tight;
   }
   
   .page-subtitle {
-    @apply text-muted-foreground;
+    @apply text-xl text-muted-foreground mt-2;
   }
-  
+
+  .vital-card {
+    @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100;
+  }
+
   .alert-banner {
-    @apply p-4 rounded-md text-white font-medium;
-  }
-  
-  .alert-banner.critical {
-    @apply bg-medical-red;
-  }
-  
-  .alert-banner.warning {
-    @apply bg-medical-yellow;
+    @apply p-4 rounded-lg text-white;
   }
   
   .alert-banner.normal {
-    @apply bg-medical-green;
+    @apply bg-green-500;
   }
   
-  .heart-rate-line {
-    stroke: #ef4444;
-    stroke-width: 2;
-    fill: none;
-    animation: pulse 1.5s ease-in-out infinite;
+  .alert-banner.warning {
+    @apply bg-amber-500;
   }
   
-  .chart-container {
-    @apply h-64 lg:h-80 w-full animate-slide-up;
+  .alert-banner.critical {
+    @apply bg-red-500;
+  }
+}
+
+:root {
+  --medical-blue: #3b82f6;
+  --medical-red: #ef4444;
+  --medical-green: #10b981;
+  --medical-yellow: #f59e0b;
+  --medical-purple: #8b5cf6;
+  --medical-dark: #1e293b;
+}
+
+@layer utilities {
+  .text-medical-blue {
+    color: var(--medical-blue);
   }
   
-  .oxygen-color {
-    @apply text-medical-blue;
+  .text-medical-red {
+    color: var(--medical-red);
   }
   
-  .temperature-color {
-    @apply text-medical-red;
+  .text-medical-green {
+    color: var(--medical-green);
   }
   
-  .heart-rate-color {
-    @apply text-medical-purple;
+  .text-medical-yellow {
+    color: var(--medical-yellow);
+  }
+  
+  .text-medical-purple {
+    color: var(--medical-purple);
+  }
+  
+  .text-medical-dark {
+    color: var(--medical-dark);
+  }
+  
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out forwards;
+  }
+}
+
+/* RTL support */
+[dir="rtl"] .ml-1, [dir="rtl"] .ml-2, [dir="rtl"] .ml-3, [dir="rtl"] .ml-4, [dir="rtl"] .ml-5 {
+  margin-left: 0;
+  margin-right: 0.25rem;
+  margin-right: 0.5rem;
+  margin-right: 0.75rem;
+  margin-right: 1rem;
+  margin-right: 1.25rem;
+}
+
+[dir="rtl"] .mr-1, [dir="rtl"] .mr-2, [dir="rtl"] .mr-3, [dir="rtl"] .mr-4, [dir="rtl"] .mr-5 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+  margin-left: 0.5rem;
+  margin-left: 0.75rem;
+  margin-left: 1rem;
+  margin-left: 1.25rem;
+}
+
+[dir="rtl"] .space-x-1 > *, [dir="rtl"] .space-x-2 > *, [dir="rtl"] .space-x-3 > *, [dir="rtl"] .space-x-4 > * {
+  margin-right: var(--tw-space-x-reverse);
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+[dir="rtl"] .space-x-reverse > * {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

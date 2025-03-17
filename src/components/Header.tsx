@@ -4,10 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
 import { Activity, FileText, BarChart2, LogOut, User, ClipboardList } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
   const location = useLocation();
+  const { t, language } = useLanguage();
   
   const isActiveRoute = (path: string) => {
     return location.pathname === path;
@@ -19,7 +22,7 @@ const Header = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <Activity className="h-8 w-8 text-medical-blue mr-2" />
+              <Activity className={`h-8 w-8 text-medical-blue ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
               <span className="text-xl font-bold text-medical-dark">VitalTrack</span>
             </Link>
           </div>
@@ -37,7 +40,7 @@ const Header = () => {
                 >
                   <div className="flex items-center space-x-1">
                     <Activity className="h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>{t('dashboard')}</span>
                   </div>
                 </Link>
                 
@@ -51,7 +54,7 @@ const Header = () => {
                 >
                   <div className="flex items-center space-x-1">
                     <FileText className="h-4 w-4" />
-                    <span>Reports</span>
+                    <span>{t('reports')}</span>
                   </div>
                 </Link>
                 
@@ -65,7 +68,7 @@ const Header = () => {
                 >
                   <div className="flex items-center space-x-1">
                     <BarChart2 className="h-4 w-4" />
-                    <span>Comparison</span>
+                    <span>{t('comparison')}</span>
                   </div>
                 </Link>
 
@@ -79,15 +82,16 @@ const Header = () => {
                 >
                   <div className="flex items-center space-x-1">
                     <ClipboardList className="h-4 w-4" />
-                    <span>ملف المريض</span>
+                    <span>{t('patientProfile')}</span>
                   </div>
                 </Link>
               </nav>
               
               <div className="flex items-center space-x-2">
+                <LanguageSwitcher />
                 <div className="text-sm font-medium text-gray-700 hidden sm:block">
                   <User className="h-4 w-4 inline mr-1" />
-                  {user?.name || 'User'}
+                  {user?.name || t('user')}
                 </div>
                 <Button 
                   variant="ghost" 
@@ -96,17 +100,18 @@ const Header = () => {
                   className="text-gray-700 hover:text-gray-900"
                 >
                   <LogOut className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <span className="hidden sm:inline">{t('logout')}</span>
                 </Button>
               </div>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
+              <LanguageSwitcher />
               <Link to="/login">
-                <Button variant="ghost" size="sm">Login</Button>
+                <Button variant="ghost" size="sm">{t('login')}</Button>
               </Link>
               <Link to="/register">
-                <Button size="sm">Register</Button>
+                <Button size="sm">{t('register')}</Button>
               </Link>
             </div>
           )}
@@ -126,7 +131,7 @@ const Header = () => {
               }`}
             >
               <Activity className="h-5 w-5 mx-auto mb-1" />
-              <span className="text-xs">Dashboard</span>
+              <span className="text-xs">{t('dashboard')}</span>
             </Link>
             
             <Link 
@@ -138,7 +143,7 @@ const Header = () => {
               }`}
             >
               <FileText className="h-5 w-5 mx-auto mb-1" />
-              <span className="text-xs">Reports</span>
+              <span className="text-xs">{t('reports')}</span>
             </Link>
             
             <Link 
@@ -150,7 +155,7 @@ const Header = () => {
               }`}
             >
               <BarChart2 className="h-5 w-5 mx-auto mb-1" />
-              <span className="text-xs">Comparison</span>
+              <span className="text-xs">{t('comparison')}</span>
             </Link>
             
             <Link 
@@ -162,7 +167,7 @@ const Header = () => {
               }`}
             >
               <ClipboardList className="h-5 w-5 mx-auto mb-1" />
-              <span className="text-xs">ملف المريض</span>
+              <span className="text-xs">{t('patientProfile')}</span>
             </Link>
           </div>
         </div>
