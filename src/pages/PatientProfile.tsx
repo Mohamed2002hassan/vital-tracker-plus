@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -8,25 +8,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { User, ClipboardList, Activity, Calendar, MapPin, Phone, Mail, Edit } from 'lucide-react';
+import { AuthContext } from '../App';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const PatientProfile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, updateUserProfile } = useContext(AuthContext);
+  const { language } = useLanguage();
   
-  // Mock patient data
-  const [patient, setPatient] = useState({
-    id: "P12345",
-    name: "أحمد محمد",
-    age: 42,
-    gender: "ذكر",
-    dateOfBirth: "1981-05-15",
-    bloodType: "A+",
-    address: "شارع الملك فهد، الرياض",
-    phone: "+966 50 123 4567",
-    email: "ahmad@example.com",
-    emergencyContact: "محمد علي (الأخ) - +966 55 876 5432",
-    chronicConditions: ["ارتفاع ضغط الدم", "مرض السكري من النوع الثاني"],
-    allergies: ["البنسلين", "المكسرات"],
+  // استخدام بيانات المستخدم المسجل
+  const patientData = {
+    id: user?.patientId || "P12345",
+    name: user?.name || "أحمد محمد",
+    age: user?.age || 42,
+    gender: user?.gender || "ذكر",
+    dateOfBirth: user?.dateOfBirth || "1981-05-15",
+    bloodType: user?.bloodType || "A+",
+    address: user?.address || "شارع الملك فهد، الرياض",
+    phone: user?.phone || "+966 50 123 4567",
+    email: user?.email || "ahmad@example.com",
+    emergencyContact: user?.emergencyContact || "محمد علي (الأخ) - +966 55 876 5432",
+    chronicConditions: user?.chronicConditions || ["ارتفاع ضغط الدم", "مرض السكري من النوع الثاني"],
+    allergies: user?.allergies || ["البنسلين", "المكسرات"],
     medications: [
       { name: "ليسينوبريل", dosage: "10 ملغ", frequency: "مرة واحدة يومياً", startDate: "2022-03-10" },
       { name: "ميتفورمين", dosage: "500 ملغ", frequency: "مرتين يومياً", startDate: "2021-11-05" }
@@ -41,14 +45,14 @@ const PatientProfile = () => {
       { date: "2023-11-15", heartRate: 75, temperature: 37.0, oxygenLevel: 97, bloodPressure: "125/82" },
       { date: "2023-10-10", heartRate: 70, temperature: 36.7, oxygenLevel: 99, bloodPressure: "118/78" }
     ]
-  });
+  };
 
   const handleEdit = () => {
     toast({
       title: "وضع التعديل",
       description: "تم تفعيل وضع تعديل بيانات المريض",
     });
-    // In a real app, this would open an edit form
+    // في تطبيق حقيقي، سيفتح نموذج تعديل
   };
   
   return (
@@ -59,7 +63,7 @@ const PatientProfile = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Patient Personal Information Card */}
+        {/* بطاقة المعلومات الشخصية للمريض */}
         <Card className="lg:col-span-1">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-center">
@@ -71,61 +75,61 @@ const PatientProfile = () => {
           </CardHeader>
           <CardContent className="flex flex-col items-center text-center pb-4">
             <Avatar className="h-24 w-24 mb-4">
-              <AvatarImage src="" alt={patient.name} />
+              <AvatarImage src="" alt={patientData.name} />
               <AvatarFallback className="text-lg bg-primary text-primary-foreground">
-                {patient.name.split(' ').map(n => n[0]).join('')}
+                {patientData.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
-            <h2 className="text-2xl font-bold">{patient.name}</h2>
-            <p className="text-sm text-muted-foreground mb-4">رقم المريض: {patient.id}</p>
+            <h2 className="text-2xl font-bold">{patientData.name}</h2>
+            <p className="text-sm text-muted-foreground mb-4">رقم المريض: {patientData.id}</p>
             
             <div className="w-full space-y-3 text-right">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">العمر:</span>
-                <span className="font-medium">{patient.age} سنة ({patient.gender})</span>
+                <span className="font-medium">{patientData.age} سنة ({patientData.gender})</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">تاريخ الميلاد:</span>
-                <span className="font-medium">{patient.dateOfBirth}</span>
+                <span className="font-medium">{patientData.dateOfBirth}</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <Activity className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">فصيلة الدم:</span>
-                <span className="font-medium">{patient.bloodType}</span>
+                <span className="font-medium">{patientData.bloodType}</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">العنوان:</span>
-                <span className="font-medium">{patient.address}</span>
+                <span className="font-medium">{patientData.address}</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">الهاتف:</span>
-                <span className="font-medium" dir="ltr">{patient.phone}</span>
+                <span className="font-medium" dir="ltr">{patientData.phone}</span>
               </div>
               
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">البريد الإلكتروني:</span>
-                <span className="font-medium">{patient.email}</span>
+                <span className="font-medium">{patientData.email}</span>
               </div>
             </div>
           </CardContent>
           <CardFooter className="border-t pt-4">
             <div className="w-full">
               <h3 className="font-medium mb-2">جهة الاتصال في حالات الطوارئ:</h3>
-              <p className="text-sm">{patient.emergencyContact}</p>
+              <p className="text-sm">{patientData.emergencyContact}</p>
             </div>
           </CardFooter>
         </Card>
         
-        {/* Medical Information Tabs */}
+        {/* علامات تبويب المعلومات الطبية */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>المعلومات الطبية</CardTitle>
@@ -143,7 +147,7 @@ const PatientProfile = () => {
                 <div>
                   <h3 className="font-medium mb-2">الأمراض المزمنة:</h3>
                   <ul className="list-disc list-inside space-y-1">
-                    {patient.chronicConditions.map((condition, index) => (
+                    {patientData.chronicConditions.map((condition, index) => (
                       <li key={index} className="text-sm">{condition}</li>
                     ))}
                   </ul>
@@ -152,7 +156,7 @@ const PatientProfile = () => {
                 <div>
                   <h3 className="font-medium mb-2">الحساسية:</h3>
                   <ul className="list-disc list-inside space-y-1">
-                    {patient.allergies.map((allergy, index) => (
+                    {patientData.allergies.map((allergy, index) => (
                       <li key={index} className="text-sm">{allergy}</li>
                     ))}
                   </ul>
@@ -170,7 +174,7 @@ const PatientProfile = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {patient.medications.map((medication, index) => (
+                    {patientData.medications.map((medication, index) => (
                       <TableRow key={index}>
                         <TableCell className="font-medium">{medication.name}</TableCell>
                         <TableCell>{medication.dosage}</TableCell>
@@ -193,7 +197,7 @@ const PatientProfile = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {patient.medicalHistory.map((entry, index) => (
+                    {patientData.medicalHistory.map((entry, index) => (
                       <TableRow key={index}>
                         <TableCell>{entry.date}</TableCell>
                         <TableCell className="font-medium">{entry.condition}</TableCell>
@@ -208,7 +212,7 @@ const PatientProfile = () => {
           </CardContent>
         </Card>
         
-        {/* Vital Signs Card */}
+        {/* بطاقة العلامات الحيوية */}
         <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>سجل العلامات الحيوية</CardTitle>
@@ -226,7 +230,7 @@ const PatientProfile = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {patient.vitalSigns.map((vital, index) => (
+                {patientData.vitalSigns.map((vital, index) => (
                   <TableRow key={index}>
                     <TableCell>{vital.date}</TableCell>
                     <TableCell className="font-medium">{vital.heartRate}</TableCell>
