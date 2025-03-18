@@ -1,4 +1,3 @@
-
 import { TranslationValues } from '../types/language';
 
 const arabicTranslations: TranslationValues = {
@@ -102,6 +101,19 @@ const arabicTranslations: TranslationValues = {
   'registrationSuccess': 'تم إنشاء الحساب بنجاح!',
   'registrationFailed': 'فشل في إنشاء الحساب',
   'fillAllFields': 'يرجى ملء جميع الحقول',
+  
+  // Additional translations
+  'downloadReport': "تحميل التقرير",
+  'reportDownloaded': "تم تحميل التقرير بنجاح",
+  'patientInfo': "معلومات المريض",
+  'patientName': "الاسم: ",
+  'patientID': "رقم المريض: ",
+  'patientAge': "العمر: ",
+  'patientGender': "الجنس: ",
+  'patientBloodType': "فصيلة الدم: ",
+  'reportDate': "تاريخ التقرير: ",
+  'healthReport': "التقرير الصحي",
+  'generatedReport': "تقرير مولد بواسطة نظام المتابعة الصحية"
 };
 
 export default arabicTranslations;

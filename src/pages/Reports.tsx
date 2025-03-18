@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -24,12 +24,25 @@ import { FileText, Download, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
+import { LanguageContext } from '@/contexts/LanguageContext';
 
 const Reports = () => {
   const [historicalData, setHistoricalData] = useState<VitalsDataPoint[]>([]);
   const [timeRange, setTimeRange] = useState<string>("7");
   const [analysisText, setAnalysisText] = useState<string>("");
   const [currentTab, setCurrentTab] = useState<string>("charts");
+  const { t, language } = useContext(LanguageContext);
+  const { toast } = useToast();
+  
+  // Mock patient data (in a real app this would come from an API or context)
+  const patientData = {
+    id: "P12345",
+    name: language === 'ar' ? "أحمد محمد" : "Ahmad Mohammad",
+    age: 42,
+    gender: language === 'ar' ? "ذكر" : "Male",
+    bloodType: "A+",
+  };
   
   // Load historical data
   useEffect(() => {
@@ -54,9 +67,41 @@ const Reports = () => {
   const temperatureData = getChartData('temperature');
   const oxygenLevelData = getChartData('oxygenLevel');
   
-  // Function to "download" report (mock functionality)
+  // Function to generate and download the report
   const downloadReport = () => {
-    alert("Report download functionality would be implemented here in a real application.");
+    const currentDate = format(new Date(), 'yyyy-MM-dd');
+    
+    // Generate report content with patient information
+    let reportContent = `${t('healthReport')}\n`;
+    reportContent += `${t('reportDate')}${currentDate}\n\n`;
+    reportContent += `${t('patientInfo')}\n`;
+    reportContent += `${t('patientName')}${patientData.name}\n`;
+    reportContent += `${t('patientID')}${patientData.id}\n`;
+    reportContent += `${t('patientAge')}${patientData.age}\n`;
+    reportContent += `${t('patientGender')}${patientData.gender}\n`;
+    reportContent += `${t('patientBloodType')}${patientData.bloodType}\n\n`;
+    
+    // Add analysis text to the report
+    reportContent += analysisText;
+    
+    // Add footer
+    reportContent += `\n\n${t('generatedReport')}`;
+    
+    // Create a blob and download it
+    const blob = new Blob([reportContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `health_report_${patientData.id}_${currentDate}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: t('reportDownloaded'),
+      description: currentDate,
+    });
   };
   
   return (
@@ -87,7 +132,7 @@ const Reports = () => {
           
           <Button variant="outline" size="sm" onClick={downloadReport} className="flex items-center">
             <Download className="h-4 w-4 mr-2" />
-            Download Report
+            {t('downloadReport')}
           </Button>
         </div>
         
