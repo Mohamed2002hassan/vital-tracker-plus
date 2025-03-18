@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -25,14 +24,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
-import { LanguageContext } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Reports = () => {
   const [historicalData, setHistoricalData] = useState<VitalsDataPoint[]>([]);
   const [timeRange, setTimeRange] = useState<string>("7");
   const [analysisText, setAnalysisText] = useState<string>("");
   const [currentTab, setCurrentTab] = useState<string>("charts");
-  const { t, language } = useContext(LanguageContext);
+  const { t, language } = useLanguage();
   const { toast } = useToast();
   
   // Mock patient data (in a real app this would come from an API or context)
@@ -337,3 +336,4 @@ const Reports = () => {
 };
 
 export default Reports;
+
