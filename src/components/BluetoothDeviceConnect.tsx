@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Bluetooth, BluetoothOff, Activity } from 'lucide-react';
@@ -8,6 +7,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface BluetoothDeviceConnectProps {
   onReading: (reading: BluetoothReading) => void;
+}
+
+// Update the global interface to use correct NodeJS.Timeout type
+declare global {
+  interface Window {
+    _simulationIntervals?: NodeJS.Timeout[];
+  }
 }
 
 const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
@@ -141,7 +147,7 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
       });
     }, 5000);
     
-    // تخزين المراجع للإيقاف لاحقاً
+    // تخزين المراجع للإيقاف لاحقاً - with correct NodeJS.Timeout type
     window._simulationIntervals = [heartRateInterval, tempInterval, oxygenInterval];
   };
   
@@ -242,11 +248,5 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
     </div>
   );
 };
-
-declare global {
-  interface Window {
-    _simulationIntervals?: number[];
-  }
-}
 
 export default BluetoothDeviceConnect;
