@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import Header from '@/components/Header';
@@ -6,14 +5,17 @@ import VitalCard from '@/components/VitalCard';
 import HeartRateMonitor from '@/components/HeartRateMonitor';
 import AlertBanner from '@/components/AlertBanner';
 import DiseasePrediction from '@/components/DiseasePrediction';
+import BluetoothDeviceConnect from '@/components/BluetoothDeviceConnect';
 import { generateVitalData, VitalsDataPoint } from '@/utils/vitalsData';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { BluetoothReading } from '@/services/BluetoothService';
 
 const Dashboard = () => {
   const [vitalsData, setVitalsData] = useState<VitalsDataPoint | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRealData, setIsRealData] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
   
@@ -24,6 +26,9 @@ const Dashboard = () => {
   
   // Function to fetch new vital data
   const fetchVitalsData = () => {
+    // اذا كان هناك اتصال حقيقي مع الأجهزة، لا نقوم بتوليد بيانات عشوائية
+    if (isRealData) return;
+    
     setLoading(true);
     
     // Simulate loading delay
@@ -57,6 +62,61 @@ const Dashboard = () => {
     }, 1500);
   };
   
+  // استقبال القراءات الحقيقية من الأجهزة الطبية
+  const handleDeviceReading = (reading: BluetoothReading) => {
+    // تبديل وضع البيانات إلى بيانات حقيقية
+    if (!isRealData) {
+      setIsRealData(true);
+    }
+    
+    setVitalsData((prevData) => {
+      if (!prevData) {
+        // إذا لم تكن هناك بيانات سابقة، نقوم بتوليد بيانات أولية
+        const newData = generateVitalData();
+        
+        // تحديث القيمة المستلمة فقط
+        if (reading.type === "heartRate") {
+          newData.heartRate.value = reading.value;
+          newData.heartRate.timestamp = reading.timestamp;
+        } else if (reading.type === "temperature") {
+          newData.temperature.value = reading.value;
+          newData.temperature.timestamp = reading.timestamp;
+        } else if (reading.type === "oxygenLevel") {
+          newData.oxygenLevel.value = reading.value;
+          newData.oxygenLevel.timestamp = reading.timestamp;
+        }
+        
+        return newData;
+      }
+      
+      // نسخة جديدة من البيانات السابقة
+      const updatedData = { ...prevData };
+      
+      // تحديث القيمة المستلمة فقط
+      if (reading.type === "heartRate") {
+        updatedData.heartRate = {
+          ...updatedData.heartRate,
+          value: reading.value,
+          timestamp: reading.timestamp
+        };
+      } else if (reading.type === "temperature") {
+        updatedData.temperature = {
+          ...updatedData.temperature,
+          value: reading.value,
+          timestamp: reading.timestamp
+        };
+      } else if (reading.type === "oxygenLevel") {
+        updatedData.oxygenLevel = {
+          ...updatedData.oxygenLevel,
+          value: reading.value,
+          timestamp: reading.timestamp
+        };
+      }
+      
+      return updatedData;
+    });
+  };
+  
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
@@ -67,16 +127,19 @@ const Dashboard = () => {
           <p className="page-subtitle">{t('monitorVitalSigns')}</p>
         </div>
         
+        {/* إضافة مكون الاتصال بالأجهزة الطبية */}
+        <BluetoothDeviceConnect onReading={handleDeviceReading} />
+        
         <div className="mb-6 flex justify-end">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={fetchVitalsData}
-            disabled={loading}
+            disabled={loading || isRealData}
             className="flex items-center"
           >
             <RefreshCw className={`h-4 w-4 ${language === 'ar' ? 'ml-2' : 'mr-2'} ${loading ? 'animate-spin' : ''}`} />
-            {t('refreshData')}
+            {isRealData ? t('usingRealData') : t('refreshData')}
           </Button>
         </div>
         
