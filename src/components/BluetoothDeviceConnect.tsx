@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Bluetooth, BluetoothOff } from 'lucide-react';
+import { Bluetooth, BluetoothOff, Activity } from 'lucide-react';
 import BluetoothService, { BluetoothDevice, BluetoothReading } from '@/services/BluetoothService';
 import { useToast } from '@/components/ui/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -15,6 +15,7 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
+  const [simulationActive, setSimulationActive] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
 
@@ -94,8 +95,66 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
   const handleDisconnect = () => {
     BluetoothService.disconnect();
     setIsConnected(false);
+    setSimulationActive(false);
     toast({
       title: t("deviceDisconnected"),
+      description: t("dataStreamStopped"),
+    });
+  };
+
+  // محاكاة الأجهزة للاختبار
+  const startSimulation = () => {
+    setIsConnected(true);
+    setSimulationActive(true);
+    toast({
+      title: t("deviceConnected"),
+      description: t("simulationMode"),
+    });
+    
+    // محاكاة إرسال بيانات القلب كل 3 ثواني
+    const heartRateInterval = setInterval(() => {
+      const heartRate = 60 + Math.floor(Math.random() * 40); // 60-100 bpm
+      onReading({
+        type: "heartRate",
+        value: heartRate,
+        timestamp: new Date()
+      });
+    }, 3000);
+    
+    // محاكاة إرسال بيانات درجة الحرارة كل 10 ثواني
+    const tempInterval = setInterval(() => {
+      const temp = 36 + (Math.random() * 2); // 36-38 °C
+      onReading({
+        type: "temperature",
+        value: parseFloat(temp.toFixed(1)),
+        timestamp: new Date()
+      });
+    }, 10000);
+    
+    // محاكاة إرسال بيانات الأكسجين كل 5 ثواني
+    const oxygenInterval = setInterval(() => {
+      const oxygen = 94 + Math.floor(Math.random() * 6); // 94-99%
+      onReading({
+        type: "oxygenLevel",
+        value: oxygen,
+        timestamp: new Date()
+      });
+    }, 5000);
+    
+    // تخزين المراجع للإيقاف لاحقاً
+    window._simulationIntervals = [heartRateInterval, tempInterval, oxygenInterval];
+  };
+  
+  // إيقاف المحاكاة
+  const stopSimulation = () => {
+    if (window._simulationIntervals) {
+      window._simulationIntervals.forEach(clearInterval);
+      window._simulationIntervals = [];
+    }
+    setIsConnected(false);
+    setSimulationActive(false);
+    toast({
+      title: t("simulationStopped"),
       description: t("dataStreamStopped"),
     });
   };
@@ -112,24 +171,38 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
           {t('medicalDevices')}
         </h2>
         
-        {isConnected ? (
-          <Button 
-            variant="destructive" 
-            size="sm" 
-            onClick={handleDisconnect}
-          >
-            {t('disconnect')}
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleScanDevices}
-            disabled={!isSupported || isScanning}
-          >
-            {isScanning ? t('scanning') : t('scanForDevices')}
-          </Button>
-        )}
+        <div className="flex space-x-2">
+          {isConnected ? (
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              onClick={simulationActive ? stopSimulation : handleDisconnect}
+            >
+              {t('disconnect')}
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleScanDevices}
+                disabled={!isSupported || isScanning}
+              >
+                {isScanning ? t('scanning') : t('scanForDevices')}
+              </Button>
+              
+              <Button
+                variant="default"
+                size="sm"
+                onClick={startSimulation}
+                className="flex items-center"
+              >
+                <Activity className="h-4 w-4 mr-1" />
+                {t('simulate')}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
       
       {!isSupported && (
@@ -163,11 +236,17 @@ const BluetoothDeviceConnect = ({ onReading }: BluetoothDeviceConnectProps) => {
       {isConnected && (
         <p className="text-sm text-green-600 flex items-center">
           <span className="inline-block h-2 w-2 bg-green-600 rounded-full mr-2 animate-pulse"></span>
-          {t('deviceConnected')} - {t('receivingLiveData')}
+          {t('deviceConnected')} - {simulationActive ? t('simulationActive') : t('receivingLiveData')}
         </p>
       )}
     </div>
   );
 };
+
+declare global {
+  interface Window {
+    _simulationIntervals?: number[];
+  }
+}
 
 export default BluetoothDeviceConnect;

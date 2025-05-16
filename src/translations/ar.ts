@@ -49,5 +49,9 @@ export const ar = {
   receivingLiveData: "استقبال بيانات حية",
   error: "خطأ",
   usingRealData: "استخدام البيانات الحقيقية",
-  browserDoesNotSupportBluetooth: "متصفحك لا يدعم تقنية البلوتوث. يرجى استخدام Chrome أو Edge أو Opera."
+  browserDoesNotSupportBluetooth: "متصفحك لا يدعم تقنية البلوتوث. يرجى استخدام Chrome أو Edge أو Opera.",
+  simulate: "محاكاة الجهاز",
+  simulationMode: "وضع المحاكاة - يتم توليد بيانات اختبار",
+  simulationActive: "المحاكاة نشطة",
+  simulationStopped: "تم إيقاف المحاكاة"
 };

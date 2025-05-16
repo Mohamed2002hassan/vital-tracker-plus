@@ -1,12 +1,12 @@
 
 import { Language, TranslationValues } from '../types/language';
-import arabicTranslations from './ar';
-import englishTranslations from './en';
+import { ar } from './ar';
+import { en } from './en';
 
 // Create translations object
 const translations: Record<Language, TranslationValues> = {
-  ar: arabicTranslations,
-  en: englishTranslations
+  ar: ar,
+  en: en
 };
 
 export default translations;

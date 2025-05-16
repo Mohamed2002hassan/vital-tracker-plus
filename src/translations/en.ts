@@ -1,3 +1,4 @@
+
 export const en = {
   // الترجمات الموجودة
   dashboard: "Dashboard",
@@ -48,5 +49,9 @@ export const en = {
   receivingLiveData: "Receiving live data",
   error: "Error",
   usingRealData: "Using Real Data",
-  browserDoesNotSupportBluetooth: "Your browser does not support Bluetooth. Please use Chrome, Edge, or Opera."
+  browserDoesNotSupportBluetooth: "Your browser does not support Bluetooth. Please use Chrome, Edge, or Opera.",
+  simulate: "Simulate Device",
+  simulationMode: "Simulation Mode - Generating test data",
+  simulationActive: "Simulation Active",
+  simulationStopped: "Simulation Stopped"
 };

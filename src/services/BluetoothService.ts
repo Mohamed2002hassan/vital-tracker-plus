@@ -1,5 +1,20 @@
 
-// خدمة الاتصال بالأجهزة الطبية عبر البلوتوث
+// تعريف واجهة Web Bluetooth API (غير موجودة في TypeScript الأساسي)
+interface BluetoothNavigator extends Navigator {
+  bluetooth?: {
+    requestDevice(options: any): Promise<any>;
+    getAvailability?(): Promise<boolean>;
+  }
+}
+
+declare global {
+  interface Navigator {
+    bluetooth?: {
+      requestDevice(options: any): Promise<any>;
+      getAvailability?(): Promise<boolean>;
+    }
+  }
+}
 
 export interface BluetoothDevice {
   id: string;
@@ -13,14 +28,14 @@ export interface BluetoothReading {
 }
 
 class BluetoothService {
-  device: BluetoothDevice | null = null;
+  device: any = null;
   server: any = null;
   isConnected = false;
   onReadingCallback: ((reading: BluetoothReading) => void) | null = null;
 
   // تحقق إذا كان البلوتوث مدعوماً في المتصفح
   isSupported(): boolean {
-    return navigator.bluetooth !== undefined;
+    return 'bluetooth' in navigator;
   }
 
   // البحث عن الأجهزة الطبية المتاحة
@@ -30,7 +45,7 @@ class BluetoothService {
     }
     
     try {
-      const device = await navigator.bluetooth.requestDevice({
+      const device = await (navigator as BluetoothNavigator).bluetooth?.requestDevice({
         // يمكن تحديد خصائص الأجهزة الطبية هنا
         filters: [
           { services: ['heart_rate'] },
@@ -42,6 +57,7 @@ class BluetoothService {
       });
       
       if (device) {
+        this.device = device;
         return [{
           id: device.id,
           name: device.name || "جهاز طبي"
@@ -62,7 +78,7 @@ class BluetoothService {
     }
 
     try {
-      const gatt = await (this.device as any).gatt.connect();
+      const gatt = await this.device.gatt.connect();
       this.server = gatt;
       this.isConnected = true;
       
